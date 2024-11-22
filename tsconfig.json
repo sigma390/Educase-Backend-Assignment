@@ -6,7 +6,10 @@
     "outDir": "./dist", // Compiled JavaScript files
     "strict": true, // Enable strict type checking
     "esModuleInterop": true, // Allow default imports from CommonJS
-    "skipLibCheck": true // Skip type checks for libraries
+    "skipLibCheck": true, // Skip type checks for libraries
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false
   },
   "exclude": ["node_modules"] // Exclude node_modules from compilation
 }
