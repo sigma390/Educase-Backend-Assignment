@@ -36,6 +36,44 @@ router.post('/addSchool', async (req: any, res: any) => {
   }
 });
 
+//=====================> Sorting Algorithm to get Nearest School <========================
+
+router.get('/listSchools', async (req: any, res: any) => {
+  const { usrlatitude, usrlongitude } = req.query;
+  const userlatitude = parseFloat(usrlatitude);
+  const userlongitude = parseFloat(usrlongitude);
+  if (!userlatitude || !userlongitude) {
+    throw new Error('Please provide both latitude and longitude');
+  }
+
+  try {
+    const schools = await School.find();
+
+    // Calculate distance for each school and sort by proximity
+    const sortedSchools = schools
+      .map((school: any) => ({
+        ...school.toObject(),
+        distance: ShortestDistance(
+          userlatitude,
+          userlongitude,
+          school.latitude,
+          school.longitude
+        ),
+      }))
+      .sort((a: any, b: any) => a.distance - b.distance); // Sort by distance
+    // Return the sorted list of schools
+    return res.status(200).json(sortedSchools);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: 'Error fetching schools',
+      error: (error as Error).message,
+    });
+  }
+});
+
+export default router;
+
 // router.post('/addSchools', async (req: any, res: any) => {
 //   const dummySchools = [
 //     {
@@ -117,38 +155,3 @@ router.post('/addSchool', async (req: any, res: any) => {
 //     });
 //   }
 // });
-
-//=====================> Sorting Algorithm to get Nearest School <========================
-
-router.get('/listSchools', async (req: any, res: any) => {
-  const { usrlatitude, usrlongitude } = req.query;
-  const userlatitude = parseFloat(usrlatitude);
-  const userlongitude = parseFloat(usrlongitude);
-
-  try {
-    const schools = await School.find();
-
-    // Calculate distance for each school and sort by proximity
-    const sortedSchools = schools
-      .map((school: any) => ({
-        ...school.toObject(),
-        distance: ShortestDistance(
-          userlatitude,
-          userlongitude,
-          school.latitude,
-          school.longitude
-        ),
-      }))
-      .sort((a: any, b: any) => a.distance - b.distance); // Sort by distance
-    // Return the sorted list of schools
-    return res.status(200).json(sortedSchools);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      message: 'Error fetching schools',
-      error: (error as Error).message,
-    });
-  }
-});
-
-export default router;
