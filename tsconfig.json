@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES2020", // Target modern JavaScript
+    "module": "commonjs", // Use CommonJS modules
+    "rootDir": "./src", // Your TypeScript files
+    "outDir": "./dist", // Compiled JavaScript files
+    "strict": true, // Enable strict type checking
+    "esModuleInterop": true, // Allow default imports from CommonJS
+    "skipLibCheck": true // Skip type checks for libraries
+  },
+  "exclude": ["node_modules"] // Exclude node_modules from compilation
+}
