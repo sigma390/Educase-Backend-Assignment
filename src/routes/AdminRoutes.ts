@@ -5,7 +5,7 @@ const router = Router();
 
 // Add School Endpoint
 router.post('/addSchool', async (req: any, res: any) => {
-  const { name, address, latitude, longitude } = req.body;
+  const { id, name, address, latitude, longitude } = req.body;
 
   // Validate required fields
   if (!name || !address || !latitude || !longitude) {
@@ -13,12 +13,7 @@ router.post('/addSchool', async (req: any, res: any) => {
   }
 
   try {
-    const newSchool = new School({
-      name,
-      address,
-      latitude,
-      longitude,
-    });
+    const newSchool = new School({ id, name, address, latitude, longitude });
 
     // Save the new school to the database
     const savedSchool = await newSchool.save();
